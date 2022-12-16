@@ -72,18 +72,18 @@ func TestInfluxdb01(t *testing.T) {
 func TestInfluxdb02(t *testing.T) {
 	queryAPI := client.QueryAPI(org)
 	query := `from(bucket: "device")
-				|> range(start: 0, stop: 2023-12-16T10:21:28Z)
-				|> filter(fn: (r) => r._measurement == "test3" and r.local == "坪山" and r.type == "render")
-				|> sort(columns: ["_time"], desc: true)
-				//|> last()
-				|> limit(n: 1, offset: 0)
-				|> pivot(rowKey: ["_time"], columnKey: ["_field"], valueColumn: "_value")`
+			|> range(start: 0, stop: 2023-12-16T10:21:28Z)
+			|> filter(fn: (r) => r._measurement == "test3" and r.local == "坪山" and r.type == "render")
+			|> sort(columns: ["_time"], desc: true)
+			//|> last()
+			|> limit(n: 2, offset: 0)
+			|> pivot(rowKey: ["_time"], columnKey: ["_field"], valueColumn: "_value")`
 	results, err := queryAPI.Query(context.Background(), query)
 	if err != nil {
 		log.Fatal(err)
 	}
 	for results.Next() {
-		fmt.Println(results.Record())
+		log.Println(results.Record())
 	}
 	if err := results.Err(); err != nil {
 		log.Fatal(err)
