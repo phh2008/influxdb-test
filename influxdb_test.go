@@ -75,6 +75,7 @@ func TestInfluxdb02(t *testing.T) {
 			|> range(start: 0, stop: 2023-12-16T10:21:28Z)
 			|> filter(fn: (r) => r._measurement == "test3" and r.local == "坪山" and r.type == "render")
 			|> sort(columns: ["_time"], desc: true)
+			|> drop(columns: ["_start","_stop"])
 			//|> last()
 			|> limit(n: 2, offset: 0)
 			|> pivot(rowKey: ["_time"], columnKey: ["_field"], valueColumn: "_value")`
